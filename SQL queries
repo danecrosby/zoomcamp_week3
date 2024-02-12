@@ -1,0 +1,42 @@
+
+--Count Distinct PULocationID
+SELECT COUNT(DISTINCT PULocationID) AS distinct_PULocationID_count
+FROM `new-york-city-taxi-414104.new_york_taxi_dataset.new_york_taxi_table`;
+
+
+--Count fare_amount = 0
+SELECT COUNT(fare_amount)
+FROM `new-york-city-taxi-414104.new_york_taxi_dataset.new_york_taxi_table`
+WHERE fare_amount = 0;
+
+--External Count Distinct PULocationID
+SELECT COUNT(DISTINCT PULocationID) AS distinct_PULocationID_count
+FROM `new-york-city-taxi-414104.new_york_taxi_dataset.external_new_york_taxi_table`;
+
+
+--External Taxi Table Upload
+CREATE OR REPLACE EXTERNAL TABLE `new-york-city-taxi-414104.new_york_taxi_dataset.external_new_york_taxi_table`
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://super_awesome_taxi_bucket/green_tripdata_2022-*.parquet']
+);
+
+--Select count(*)
+SELECT count(*)
+FROM `new-york-city-taxi-414104.new_york_taxi_dataset.new_york_taxi_table`;
+
+
+
+--Unique PULocationID in June
+SELECT COUNT(DISTINCT PULocationID) AS distinct_PULocationID_count
+FROM `new-york-city-taxi-414104.new_york_taxi_dataset.new_york_taxi_table`
+WHERE lpep_pickup_datetime >= '2022-06-01 00:00:00' 
+  AND lpep_pickup_datetime <= '2022-06-30 23:59:59';
+
+--Unique PULocationID on Partitioned and Clustered table in June
+SELECT COUNT(DISTINCT PULocationID) AS distinct_PULocationID_count
+FROM `new-york-city-taxi-414104.new_york_taxi_dataset.partitioned_new_york_taxi_table`
+WHERE lpep_pickup_datetime >= '2022-06-01 00:00:00' 
+  AND lpep_pickup_datetime <= '2022-06-30 23:59:59';
+
+  
